@@ -1,0 +1,63 @@
+---
+aid: universiti-teknologi-petronas
+name: Universiti Teknologi PETRONAS
+description: >-
+  Universiti Teknologi PETRONAS (UTP) is a leading private research university in
+  Seri Iskandar, Perak, Malaysia, established in 1997 and wholly owned by the
+  national oil company PETRONAS. It is ranked #270 in the QS World University
+  Rankings 2025 and offers engineering, science, technology, and business
+  programmes. UTP does not publish a dedicated developer portal; its primary
+  programmatic surface confirmed to be public is the UTPedia institutional
+  repository, which exposes an EPrints OAI-PMH 2.0 endpoint for metadata
+  harvesting. Most other systems (single sign-on, student portal, admissions)
+  are authentication-gated and not publicly documented as APIs.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/universiti-teknologi-petronas/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - Open Access
+  - Institutional Repository
+  - OAI-PMH
+  - Malaysia
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: universiti-teknologi-petronas:utpedia-oai
+    name: UTPedia Institutional Repository (OAI-PMH)
+    description: >-
+      UTPedia ("UTP Electronic and Digital Intellectual Asset") is the UTP
+      institutional repository running EPrints 3.4.7. It exposes a public
+      OAI-PMH 2.0 endpoint for harvesting bibliographic metadata of theses,
+      dissertations, and other intellectual assets. Supported metadata formats
+      include oai_dc, mets, didl, rdf, oai_bibl, and uketd_dc.
+    humanURL: http://utpedia.utp.edu.my/
+    baseURL: http://utpedia.utp.edu.my/cgi/oai2
+    tags: [ Repository, OAI-PMH, EPrints, Metadata, Open Access, Research ]
+    properties:
+      - type: Documentation
+        url: http://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+common:
+  - type: Website
+    url: https://www.utp.edu.my/
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/universiti-teknologi-petronas/
+  - type: Authentication
+    url: https://ucs.utp.edu.my/SignIn
+  - type: Plans
+    url: plans/universiti-teknologi-petronas-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/universiti-teknologi-petronas-rate-limits.yml
+  - type: FinOps
+    url: finops/universiti-teknologi-petronas-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

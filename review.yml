@@ -1,0 +1,38 @@
+---
+name: Universiti Teknologi PETRONAS
+description: Universiti Teknologi PETRONAS public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/universiti-teknologi-petronas/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      UTP has no dedicated developer portal or documented REST/GraphQL APIs.
+      The one confirmed public, machine-readable surface is the UTPedia
+      institutional repository's EPrints OAI-PMH 2.0 endpoint, which returned a
+      valid Identify response (repository "UTP Electronic and Digital
+      Intellectual Asset", EPrints 3.4.7) and lists multiple metadata formats
+      (oai_dc, mets, didl, rdf, oai_bibl, uketd_dc). The official website and
+      the UCS single sign-on page resolve and are live; SSO is auth-gated and
+      not a documented public API. No endpoints were fabricated; only URLs
+      actually probed are listed below. Note that the UTPedia HTTP endpoint
+      resolved successfully via web fetch but returned a connection error (0)
+      when probed by curl from this environment, likely a network/firewall
+      condition on the http .my host.
+    endpoints:
+      - url: https://www.utp.edu.my/
+        status: 200
+        note: Official institution homepage, live.
+      - url: http://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+        status: 0
+        note: Valid OAI-PMH Identify via web fetch (EPrints 3.4.7); curl returned 0 from this environment.
+      - url: http://utpedia.utp.edu.my/cgi/oai2?verb=ListMetadataFormats
+        status: 0
+        note: Returned metadata formats oai_dc, mets, didl, rdf, oai_bibl, uketd_dc via web fetch.
+      - url: https://ucs.utp.edu.my/SignIn
+        status: 200
+        note: UTP Computing Services single sign-on; authentication-gated, not a public API.
+      - url: https://www.linkedin.com/school/universiti-teknologi-petronas/
+        status: 999
+        note: Official LinkedIn school page; 999 is LinkedIn's standard bot block, page exists.
