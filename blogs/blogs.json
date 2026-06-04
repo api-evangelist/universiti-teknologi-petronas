@@ -1,0 +1,14 @@
+{
+  "repo": "universiti-teknologi-petronas",
+  "feeds": [
+    {
+      "source": "https://www.utp.edu.my/Pages/Media/News-and-Announcement.aspx",
+      "feed_url": "https://www.utp.edu.my/Pages/Media/News-and-Announcement.aspx",
+      "title": "UTP News and Announcements",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-03T00:00:00Z"
+}

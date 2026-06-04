@@ -1,0 +1,60 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "oai": "http://www.openarchives.org/OAI/2.0/",
+    "utp": "https://www.utp.edu.my/ns#",
+    "@vocab": "https://www.utp.edu.my/ns#",
+
+    "name": "schema:name",
+    "url": "schema:url",
+    "description": "schema:description",
+
+    "University": "schema:CollegeOrUniversity",
+    "foundingDate": "schema:foundingDate",
+    "address": "schema:address",
+
+    "Repository": {
+      "@id": "schema:DataCatalog",
+      "@context": {
+        "baseURL": "schema:url",
+        "protocolVersion": "oai:protocolVersion",
+        "earliestDatestamp": "oai:earliestDatestamp",
+        "adminEmail": "schema:email",
+        "metadataFormats": "oai:metadataPrefix"
+      }
+    },
+
+    "Record": {
+      "@id": "schema:CreativeWork",
+      "@context": {
+        "identifier": "dc:identifier",
+        "title": "dc:title",
+        "creator": "dc:creator",
+        "subject": "dc:subject",
+        "abstract": "dc:description",
+        "date": "dc:date",
+        "type": "dc:type",
+        "format": "dc:format",
+        "language": "dc:language",
+        "relation": "dc:relation"
+      }
+    }
+  },
+  "@type": "University",
+  "name": "Universiti Teknologi PETRONAS",
+  "url": "https://www.utp.edu.my/",
+  "description": "A leading private research university in Seri Iskandar, Perak, Malaysia, established in 1997 and wholly owned by PETRONAS. Publishes the UTPedia institutional repository exposing an EPrints OAI-PMH 2.0 metadata endpoint.",
+  "foundingDate": "1997",
+  "subOrganization": {
+    "@type": "Repository",
+    "name": "UTP Electronic and Digital Intellectual Asset (UTPedia)",
+    "url": "http://utpedia.utp.edu.my/",
+    "baseURL": "http://utpedia.utp.edu.my/cgi/oai2",
+    "protocolVersion": "2.0",
+    "earliestDatestamp": "2012-01-18",
+    "adminEmail": "sharifah_fahimah@utp.edu.my",
+    "metadataFormats": ["oai_dc", "mets", "didl", "rdf", "oai_bibl", "uketd_dc"]
+  }
+}
