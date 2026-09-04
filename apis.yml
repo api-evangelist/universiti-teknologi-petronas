@@ -1,22 +1,31 @@
 ---
 aid: universiti-teknologi-petronas
 name: Universiti Teknologi PETRONAS
+x-type: university
+x-category: Private Research University
 description: >-
-  Universiti Teknologi PETRONAS (UTP) is a leading private research university in
-  Seri Iskandar, Perak, Malaysia, established in 1997 and wholly owned by the
-  national oil company PETRONAS. It is ranked #270 in the QS World University
-  Rankings 2025 and offers engineering, science, technology, and business
-  programmes. UTP does not publish a dedicated developer portal; its primary
-  programmatic surface confirmed to be public is the UTPedia institutional
-  repository, which exposes an EPrints OAI-PMH 2.0 endpoint for metadata
-  harvesting. Most other systems (single sign-on, student portal, admissions)
-  are authentication-gated and not publicly documented as APIs.
+  Universiti Teknologi PETRONAS (UTP) is a private research university in Seri Iskandar, Perak,
+  Malaysia, established in 1997 and wholly owned by the national oil company PETRONAS. UTP
+  publishes no developer portal, no API documentation and no OpenAPI of its own, and its main
+  website — a SharePoint deployment — answers HTTP 200 to unknown /.well-known/ paths, so a
+  presence check there proves nothing. What it does operate, verified by probe on 2026-09-01, is
+  two self-hosted EPrints repositories on its own domain: UTPedia (utpedia.utp.edu.my, theses and
+  final-year projects) and UTP Scholarly Publication (scholars.utp.edu.my, staff publications).
+  Each serves an open OAI-PMH 2.0 endpoint, an unauthenticated EPrints REST dataset interface, an
+  OpenSearch description document and RSS feeds; UTPedia additionally serves per-record JSON. The
+  institution runs its own Microsoft Entra ID tenant for single sign-on, whose SAML 2.0 federation
+  metadata and OIDC discovery document are public — it is not in eduGAIN or the Malaysian SIFULAN
+  federation. UTP is a Crossref member (prefix 10.61762, 405 DOIs) and holds ROR 048g2sh07. Its
+  learning platforms (Moodle via Pukunui at ulearn, OpenLearning at ulearnplus), its Digital
+  Commons journal archive at journal.utp.edu.my and its MyJMS journals are vendor-operated
+  tenancies recorded here as relationships, not as UTP engineering. No course catalog, timetable,
+  open-data portal or research-computing API was found on any public host.
 type: Index
 deliveryModel:
   model: saas
   open_source: false
   commercial: true
-  callable_host: false
+  callable_host: true
   label: Hosted service · you call their endpoint
   confidence: medium
   source:
@@ -25,56 +34,274 @@ deliveryModel:
   method: derived
 accessModel:
   pricing: free
-  onboarding: unknown
+  onboarding: none
   trial: false
-  try_now: false
-  public: false
-  label: Free
-  confidence: medium
+  try_now: true
+  public: true
+  label: Free · open, no registration
+  confidence: high
   source:
-  - plans
-  generated: '2026-07-22'
-  method: derived
-position: Consumer
-access: 3rd-Party
+  - probed
+  generated: '2026-09-01'
+  method: probed
+position: Producing
+access: Public
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/universiti-teknologi-petronas.png
 url: https://raw.githubusercontent.com/api-evangelist/universiti-teknologi-petronas/refs/heads/main/apis.yml
 tags:
-  - Education
-  - Higher Education
   - University
-  - Research
-  - Open Access
-  - Institutional Repository
-  - OAI-PMH
+  - Higher Education
+  - Education
   - Malaysia
+  - Private Research University
+  - Research
+  - Research Repository
+  - Institutional Repository
+  - Open Access
+  - OAI-PMH
+  - EPrints
+  - Identity Federation
+  - Learning Management
+  - Scholarly Publishing
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 specificationVersion: '0.23'
+x-coverage:
+  state: covered
+  reason: covered
+  detail: >-
+    Universiti Teknologi PETRONAS operates no general-purpose public API and publishes no developer
+    documentation, but it is not empty: two institution-hosted EPrints repositories expose OAI-PMH
+    2.0, an unauthenticated REST dataset interface, OpenSearch and RSS on utp.edu.my hosts, and the
+    institution's own Entra ID tenant publishes SAML 2.0 federation metadata and OIDC discovery.
+    Four education-regime domain standards are evidenced — oai-pmh, saml, lti and crossref;
+    shibboleth, orcid and datacite were checked and are absent. Everything else that looks like a
+    UTP API is a vendor tenancy (bepress Digital Commons, Pukunui-hosted Moodle, OpenLearning,
+    MOHE's MyJMS) and is recorded as a relationship with x-operator tenant, never as UTP's
+    contract. Two limits on this pass: myjms.mohe.gov.my, which hosts UTP's two Platform journals,
+    refused connections from our probe host, so that tenancy is documented from Crossref metadata
+    rather than probed directly; and the institution's SharePoint site returns soft 404s, so no
+    negative conclusion was drawn from status codes alone there.
+  evidence:
+    - url: https://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+      status: 200
+    - url: https://scholars.utp.edu.my/cgi/oai2?verb=Identify
+      status: 200
+    - url: https://utpedia.utp.edu.my/rest/
+      status: 200
+    - url: https://login.microsoftonline.com/utp.edu.my/federationmetadata/2007-06/federationmetadata.xml
+      status: 200
+    - url: https://ulearn.utp.edu.my/mod/lti/certs.php
+      status: 200
+    - url: https://api.crossref.org/members/39649
+      status: 200
+    - url: https://www.utp.edu.my/.well-known/apis.json
+      status: 200
+      note: soft 404 — SharePoint error page containing "File Not Found."
+    - url: https://www.utp.edu.my/llms.txt
+      status: 404
+    - url: https://api.utp.edu.my/
+      status: 0
+      note: does not resolve
+    - url: https://data.utp.edu.my/
+      status: 0
+      note: does not resolve
+    - url: https://myjms.mohe.gov.my/index.php/pjst/oai?verb=Identify
+      status: 0
+      note: connection refused from our probe host; MOHE-operated, not UTP
 apis:
-  - aid: universiti-teknologi-petronas:utpedia-oai
-    name: UTPedia Institutional Repository (OAI-PMH)
+  - aid: universiti-teknologi-petronas:utpedia
+    name: UTPedia Institutional Repository
+    x-operator: institution
+    x-operator-evidence: >-
+      Host utpedia.utp.edu.my is under the institution's own registrable domain; OAI-PMH Identify
+      names the repository "UTP Electronic and Digital Intellectual Asset" with adminEmail
+      sharifah_fahimah@utp.edu.my. Self-hosted EPrints 3.4.7, no vendor host in the path.
     description: >-
-      UTPedia ("UTP Electronic and Digital Intellectual Asset") is the UTP
-      institutional repository running EPrints 3.4.7. It exposes a public
-      OAI-PMH 2.0 endpoint for harvesting bibliographic metadata of theses,
-      dissertations, and other intellectual assets. Supported metadata formats
-      include oai_dc, mets, didl, rdf, oai_bibl, and uketd_dc.
-    humanURL: http://utpedia.utp.edu.my/
-    baseURL: http://utpedia.utp.edu.my/cgi/oai2
-    tags: [ Repository, OAI-PMH, EPrints, Metadata, Open Access, Research ]
+      UTPedia ("UTP Electronic and Digital Intellectual Asset") holds theses, dissertations and
+      final-year projects. It serves an open OAI-PMH 2.0 endpoint (formats oai_dc, mets, didl, rdf,
+      oai_bibl, uketd_dc), an unauthenticated EPrints REST interface over the eprint, subject and
+      user datasets, per-record JSON export, an OpenSearch 1.1 description document and an RSS 2.0
+      feed of recent deposits. Earliest datestamp 2012-01-18. Deposit over SWORD is credentialed.
+    humanURL: https://utpedia.utp.edu.my/
+    baseURL: https://utpedia.utp.edu.my
+    tags: [ Institutional Repository, OAI-PMH, EPrints, Open Access, Research, Metadata ]
+    properties:
+      - type: OpenAPI
+        url: openapi/universiti-teknologi-petronas-utpedia-openapi.yml
+      - type: JSONSchema
+        url: json-schema/universiti-teknologi-petronas-eprint-json-schema.json
+      - type: Examples
+        url: examples/universiti-teknologi-petronas-examples.yml
+      - type: Documentation
+        url: https://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+      - type: Website
+        url: https://utpedia.utp.edu.my/
+  - aid: universiti-teknologi-petronas:scholars
+    name: UTP Scholarly Publication Repository
+    x-operator: institution
+    x-operator-evidence: >-
+      scholars.utp.edu.my CNAMEs to eprints.utp.edu.my (203.135.191.25); both names are the
+      institution's own and the deployment is self-hosted. OAI-PMH Identify names the repository
+      "UTP Scholarly Publication" with repositoryIdentifier scholars.utp.edu.my.
+    description: >-
+      The second EPrints repository UTP runs, holding staff publication records back to 2010. Open
+      OAI-PMH 2.0, an unauthenticated EPrints REST interface, a search endpoint with selectable
+      serialisations (Atom, BibTeX, ContextObject, DC, EndNote, Ids) advertised through an
+      OpenSearch 1.1 description document, and an RSS 2.0 feed. Per-record JSON export is gated
+      behind HTTP Basic on this deployment, unlike UTPedia.
+    humanURL: https://scholars.utp.edu.my/
+    baseURL: https://scholars.utp.edu.my
+    tags: [ Institutional Repository, OAI-PMH, EPrints, OpenSearch, Open Access, Research ]
+    properties:
+      - type: OpenAPI
+        url: openapi/universiti-teknologi-petronas-scholars-openapi.yml
+      - type: Documentation
+        url: https://scholars.utp.edu.my/cgi/oai2?verb=Identify
+      - type: Website
+        url: https://scholars.utp.edu.my/
+  - aid: universiti-teknologi-petronas:entra-federation
+    name: UTP Identity Federation (Microsoft Entra ID tenant)
+    x-operator: federation
+    x-operator-evidence: >-
+      getuserrealm.srf reports utp.edu.my as a Managed namespace with FederationBrandName
+      "Universiti Teknologi PETRONAS"; the tenant is 84187be3-037e-41ec-889c-a150fe476432 and the
+      SAML entityID https://sts.windows.net/84187be3-037e-41ec-889c-a150fe476432/ is the
+      institution's own identity provider. Shared host, institution-operated IdP.
+    description: >-
+      UTP federates identity through its own Microsoft Entra ID tenant rather than a Shibboleth
+      IdP. Both the SAML 2.0 federation metadata (IDPSSODescriptor, HTTP-POST and HTTP-Redirect
+      SingleSignOnService bindings) and the OpenID Connect discovery document are public and
+      machine-readable. The institution does not appear in eduGAIN — zero of 13,203 entities carry
+      utp.edu.my — nor among the 163 entities the Malaysian SIFULAN federation exports.
+    humanURL: https://ucs.utp.edu.my/SignIn
+    baseURL: https://login.microsoftonline.com/utp.edu.my
+    tags: [ Identity Federation, SAML, OpenID Connect, Single Sign-On, Entra ID ]
+    properties:
+      - type: IdentityFederation
+        url: https://login.microsoftonline.com/utp.edu.my/federationmetadata/2007-06/federationmetadata.xml
+      - type: Documentation
+        url: https://login.microsoftonline.com/utp.edu.my/v2.0/.well-known/openid-configuration
+  - aid: universiti-teknologi-petronas:crossref-membership
+    name: Crossref membership (DOI prefix 10.61762)
+    x-operator: registry
+    x-operator-evidence: >-
+      api.crossref.org is a registry UTP is registered in, not a vendor contract. Member 39649
+      "Universiti Teknologi PETRONAS", Seri Iskandar, Perak, Malaysia.
+    description: >-
+      UTP registers DOIs with Crossref under its own prefix 10.61762 — 405 DOIs (113 current, 292
+      backfile) across "Platform: A Journal of Science and Technology" and "Platform: A Journal of
+      Management and Humanities", published by UTP Press. The membership is the institution's; the
+      API is Crossref's and is not saved here.
+    humanURL: https://www.crossref.org/
+    baseURL: https://api.crossref.org/members/39649
+    tags: [ Crossref, DOI, Scholarly Publishing, Registry ]
     properties:
       - type: Documentation
-        url: http://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+        url: https://api.crossref.org/members/39649
+  - aid: universiti-teknologi-petronas:ror
+    name: ROR registration (048g2sh07)
+    x-operator: registry
+    x-operator-evidence: >-
+      ROR is an identifier registry the institution is registered in. Record 048g2sh07, domain
+      utp.edu.my, established 1997, ISNI 0000 0004 0634 0540, GRID grid.444487.f, Crossref Funder
+      IDs 501100005710 / 501100006481 / 501100010658.
+    description: >-
+      The institution's Research Organization Registry record — the canonical machine-readable
+      identity used by DOI metadata, funder systems and repository software to disambiguate UTP.
+      The registry's own API is not saved here; the registration is the fact about UTP.
+    humanURL: https://ror.org/048g2sh07
+    baseURL: https://api.ror.org/organizations/048g2sh07
+    tags: [ ROR, Persistent Identifier, Registry, Research ]
+    properties:
+      - type: Documentation
+        url: https://ror.org/048g2sh07
+  - aid: universiti-teknologi-petronas:journal-digital-commons
+    name: "Platform: A Journal of Engineering archive (bepress Digital Commons tenancy)"
+    x-operator: tenant
+    x-operator-evidence: >-
+      journal.utp.edu.my is an institution-branded host that CNAMEs to dcutpmy.bepress.com, and the
+      OAI-PMH Identify adminEmail is dc-support@elsevier.com. UTP's content and UTP's journal;
+      bepress/Elsevier's software and contract.
+    description: >-
+      UTP's Digital Commons instance, holding the archive of "Platform: A Journal of Engineering
+      (PAJE)" back to 2000. Serves OAI-PMH 2.0 at /do/oai/. Recorded as a tenancy: the repository
+      and its metadata are the institution's, the platform contract belongs to bepress and is
+      scored against bepress, not against UTP.
+    humanURL: https://journal.utp.edu.my/
+    baseURL: https://journal.utp.edu.my/do/oai/
+    tags: [ Digital Commons, bepress, OAI-PMH, Scholarly Publishing, Tenant ]
+    properties:
+      - type: ResearchRepository
+        url: https://journal.utp.edu.my/
+      - type: Documentation
+        url: https://journal.utp.edu.my/do/oai/?verb=Identify
+  - aid: universiti-teknologi-petronas:ulearn-moodle
+    name: uLearn learning management system (Moodle tenancy)
+    x-operator: tenant
+    x-operator-evidence: >-
+      ulearn.utp.edu.my CNAMEs to ulearn.utp.my.pukunui.net — a Moodle instance hosted by the
+      Moodle partner Pukunui under an institution-branded name. The LTI 1.3 signing keys served
+      from it are UTP's; the Moodle contract is not.
+    description: >-
+      UTP's Moodle LMS. The Moodle web-service layer is enabled and answers with a structured
+      invalidtoken exception, so it is real but token-gated. The instance acts as an LTI 1.3
+      platform and publishes a live JWKS at /mod/lti/certs.php with an authorization endpoint and
+      a token endpoint — the only LTI evidence found anywhere in UTP's footprint, and the basis of
+      the education-regime lti conformance record.
+    humanURL: https://ulearn.utp.edu.my/
+    baseURL: https://ulearn.utp.edu.my
+    tags: [ Learning Management, Moodle, LTI, Tenant, Education Technology ]
+    properties:
+      - type: Documentation
+        url: https://ulearn.utp.edu.my/mod/lti/certs.php
+      - type: Website
+        url: https://ulearn.utp.edu.my/
+  - aid: universiti-teknologi-petronas:ulearnplus-openlearning
+    name: uLearn+ (OpenLearning tenancy)
+    x-operator: tenant
+    x-operator-evidence: >-
+      ulearnplus.utp.edu.my resolves through Azure Front Door to an OpenLearning-branded
+      application. Institution-branded host, vendor platform.
+    description: >-
+      UTP's OpenLearning deployment, used for open and online course delivery alongside Moodle. No
+      institution-published machine-readable descriptor was found on the host; the relationship is
+      recorded so the surface is not mistaken for UTP engineering, and so it is not re-discovered
+      and misattributed on a later pass.
+    humanURL: https://ulearnplus.utp.edu.my/
+    tags: [ Learning Management, OpenLearning, Tenant, Education Technology ]
+    properties:
+      - type: Website
+        url: https://ulearnplus.utp.edu.my/
 common:
-  - type: DomainSecurity
-    url: security/universiti-teknologi-petronas-domain-security.yml
   - type: Website
     url: https://www.utp.edu.my/
   - type: LinkedIn
     url: https://www.linkedin.com/school/universiti-teknologi-petronas/
+  - type: GitHubOrganization
+    url: https://github.com/Universiti-Teknologi-PETRONAS
+  - type: ResearchRepository
+    url: https://utpedia.utp.edu.my/
+  - type: ResearchRepository
+    url: https://scholars.utp.edu.my/
+  - type: IdentityFederation
+    url: https://login.microsoftonline.com/utp.edu.my/federationmetadata/2007-06/federationmetadata.xml
+  - type: OpenAPI
+    url: openapi/universiti-teknologi-petronas-utpedia-openapi.yml
+  - type: OpenAPI
+    url: openapi/universiti-teknologi-petronas-scholars-openapi.yml
+  - type: JSONSchema
+    url: json-schema/universiti-teknologi-petronas-eprint-json-schema.json
+  - type: Examples
+    url: examples/universiti-teknologi-petronas-examples.yml
+  - type: Conformance
+    url: conformance/universiti-teknologi-petronas-education-standards-conformance.yml
   - type: Authentication
-    url: https://ucs.utp.edu.my/SignIn
+    url: authentication/universiti-teknologi-petronas-authentication.yml
+  - type: ErrorCatalog
+    url: errors/universiti-teknologi-petronas-errors.yml
+  - type: DomainSecurity
+    url: security/universiti-teknologi-petronas-domain-security.yml
   - type: Plans
     url: plans/universiti-teknologi-petronas-plans-pricing.yml
   - type: RateLimits
