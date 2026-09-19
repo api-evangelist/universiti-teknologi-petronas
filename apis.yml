@@ -123,6 +123,12 @@ apis:
   - Identity Federation
   - SAML
   - OpenID Connect
+  - SSO
+  - Entra ID
+  tags_raw:
+  - Identity Federation
+  - SAML
+  - OpenID Connect
   - Single Sign-On
   - Entra ID
   properties:
@@ -185,6 +191,12 @@ apis:
   - bepress
   - OAI-PMH
   - Scholarly Publishing
+  - Tenants
+  tags_raw:
+  - Digital Commons
+  - bepress
+  - OAI-PMH
+  - Scholarly Publishing
   - Tenant
   properties:
   - type: ResearchRepository
@@ -208,6 +220,12 @@ apis:
   - Learning Management
   - Moodle
   - LTI
+  - Tenants
+  - Education Technology
+  tags_raw:
+  - Learning Management
+  - Moodle
+  - LTI
   - Tenant
   - Education Technology
   properties:
@@ -226,6 +244,11 @@ apis:
     on a later pass.
   humanURL: https://ulearnplus.utp.edu.my/
   tags:
+  - Learning Management
+  - OpenLearning
+  - Tenants
+  - Education Technology
+  tags_raw:
   - Learning Management
   - OpenLearning
   - Tenant
