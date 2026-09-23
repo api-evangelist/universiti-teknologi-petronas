@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/universiti-teknologi-petronas/refs/heads/main/json-schema/universiti-teknologi-petronas-eprint-json-schema.json",
+  "title": "UTPedia EPrint record (JSON export)",
+  "description": "Shape of the JSON export served by UTPedia at /cgi/export/eprint/{eprintid}/JSON/{filename}. Derived from the observed export of eprint 376 on 2026-09-01. EPrints field sets vary by item type, so this schema is descriptive of what was observed, not a contract published by the institution.",
+  "x-provenance": {
+    "generated": "2026-09-01",
+    "method": "derived",
+    "source": "https://utpedia.utp.edu.my/cgi/export/eprint/376/JSON/utpedia-eprint-376.js",
+    "x-operator": "institution"
+  },
+  "type": "object",
+  "required": ["eprintid", "eprint_status", "type", "uri"],
+  "properties": {
+    "eprintid": { "type": "integer" },
+    "rev_number": { "type": "integer" },
+    "eprint_status": { "type": "string", "examples": ["archive"] },
+    "userid": { "type": "integer" },
+    "dir": { "type": "string" },
+    "datestamp": { "type": "string" },
+    "lastmod": { "type": "string" },
+    "status_changed": { "type": "string" },
+    "type": { "type": "string", "examples": ["fyp"], "description": "EPrints item type. 'fyp' (final year project) is a UTPedia-local type value." },
+    "metadata_visibility": { "type": "string", "examples": ["show"] },
+    "creators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object",
+            "properties": {
+              "family": { "type": "string" },
+              "given": { "type": "string" },
+              "lineage": { "type": ["string", "null"] },
+              "honourific": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "title": { "type": "string" },
+    "ispublished": { "type": "string", "examples": ["unpub", "pub"] },
+    "subjects": { "type": "array", "items": { "type": "string" } },
+    "divisions": { "type": "array", "items": { "type": "string" } },
+    "full_text_status": { "type": "string", "examples": ["restricted", "public"] },
+    "abstract": { "type": "string" },
+    "date": { "type": "string" },
+    "date_type": { "type": "string", "examples": ["completed"] },
+    "publisher": { "type": "string" },
+    "place_of_pub": { "type": "string" },
+    "item_issues_count": { "type": "integer" },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "docid": { "type": "integer" },
+          "rev_number": { "type": "integer" },
+          "format": { "type": "string" },
+          "security": { "type": "string" },
+          "main": { "type": "string" },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fileid": { "type": "integer" },
+                "filename": { "type": "string" },
+                "mime_type": { "type": "string" },
+                "filesize": { "type": "integer" },
+                "hash": { "type": "string" },
+                "hash_type": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "uri": { "type": "string", "format": "uri" }
+  }
+}

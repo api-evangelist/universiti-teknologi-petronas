@@ -1,0 +1,158 @@
+openapi: 3.2.0
+info:
+  title: UTPedia Institutional Repository (EPrints)…
+  version: '2026-09-01'
+  summary: OAI-PMH 2.0, EPrints REST and export endpoints served by UTPedia, the Universiti Teknologi PETRONAS institutional repository, on the institution's own host utpedia.utp.edu.my.
+  description: UTPedia ("UTP Electronic and Digital Intellectual Asset") runs EPrints 3.4.7 on hardware under Universiti Teknologi PETRONAS's own registrable domain (utp.edu.my).
+  contact:
+    name: UTPedia repository administrator
+    email: sharifah_fahimah@utp.edu.my
+    url: https://utpedia.utp.edu.my/
+  x-operator: institution
+  x-operator-evidence: Host utpedia.utp.edu.my is under the institution's own registrable domain utp.edu.my; the OAI-PMH Identify response names the repository "UTP Electronic and Digital Intellectual Asset" with adminEmail sharifah_fahimah@utp.edu.my and repositoryIdentifier utpedia.utp.edu.my.
+  x-software: EPrints 3.4.7
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source:
+    - https://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+    - https://utpedia.utp.edu.my/cgi/oai2?verb=ListMetadataFormats
+    - https://utpedia.utp.edu.my/cgi/oai2?verb=ListSets
+    - https://utpedia.utp.edu.my/rest/
+    - https://utpedia.utp.edu.my/rest/eprint/376.xml
+    - https://utpedia.utp.edu.my/cgi/export/eprint/376/JSON/utpedia-eprint-376.js
+    - https://utpedia.utp.edu.my/cgi/opensearchdescription
+    note: Derived by API Evangelist from probed responses. No endpoint appears here that was not requested and observed.
+servers:
+- url: https://utpedia.utp.edu.my
+  description: UTPedia institutional repository (TLS). The plain-http form advertised inside the OAI-PMH baseURL element did not complete a connection from our probe host on 2026-09-01.
+tags:
+- name: Export
+  description: Per-record export in a named format.
+paths:
+  /cgi/export/eprint/{eprintid}/JSON/{filename}:
+    get:
+      tags:
+      - Export
+      operationId: exportEprintJson
+      summary: Export one eprint record as JSON
+      description: The only JSON-typed response observed on this deployment (application/json; charset=utf-8). Schema at json-schema/universiti-teknologi-petronas-eprint-json-schema.json.
+      parameters:
+      - name: eprintid
+        in: path
+        required: true
+        schema:
+          type: integer
+        examples:
+          observed:
+            value: 376
+      - name: filename
+        in: path
+        required: true
+        schema:
+          type: string
+        description: EPrints requires a trailing filename; observed form utpedia-eprint-376.js
+      responses:
+        '200':
+          description: EPrints record serialised as JSON.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EPrintRecord'
+        '401':
+          description: Returned by the sibling scholars.utp.edu.my deployment for records whose export is not public; recorded here because the two deployments share software and differ in configuration.
+components:
+  schemas:
+    EPrintRecord:
+      type: object
+      description: Shape observed in the JSON export of eprint 376 on 2026-09-01. Field set is what that record carried; EPrints records vary by item type.
+      properties:
+        eprintid:
+          type: integer
+        rev_number:
+          type: integer
+        eprint_status:
+          type: string
+          examples:
+          - archive
+        userid:
+          type: integer
+        dir:
+          type: string
+        datestamp:
+          type: string
+        lastmod:
+          type: string
+        status_changed:
+          type: string
+        type:
+          type: string
+          examples:
+          - fyp
+        metadata_visibility:
+          type: string
+          examples:
+          - show
+        creators:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  given:
+                    type: string
+                  lineage:
+                    type:
+                    - string
+                    - 'null'
+                  honourific:
+                    type:
+                    - string
+                    - 'null'
+        title:
+          type: string
+        ispublished:
+          type: string
+        subjects:
+          type: array
+          items:
+            type: string
+        divisions:
+          type: array
+          items:
+            type: string
+        full_text_status:
+          type: string
+        abstract:
+          type: string
+        date:
+          type: string
+        date_type:
+          type: string
+        publisher:
+          type: string
+        place_of_pub:
+          type: string
+        item_issues_count:
+          type: integer
+        documents:
+          type: array
+          items:
+            type: object
+        uri:
+          type: string
+          format: uri
+      required:
+      - eprintid
+      - eprint_status
+      - type
+      - uri
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: EPrints SWORD deposit credentials. Read paths above require no authentication.

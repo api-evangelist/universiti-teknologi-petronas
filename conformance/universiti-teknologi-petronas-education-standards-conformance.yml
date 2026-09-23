@@ -1,0 +1,148 @@
+---
+name: Universiti Teknologi PETRONAS — education-regime domain standard conformance
+description: >-
+  Evidence-based conformance reading of Universiti Teknologi PETRONAS against the Kin Score
+  `education` regime standards[] set. Every hit below points at an exact URL that was requested
+  on 2026-09-01 and the status it returned. Standards with no evidence are recorded as not_found
+  rather than omitted, so an absence is legible.
+generated: '2026-09-01'
+modified: '2026-09-01'
+method: probed
+source: live HTTP probes and registry API lookups on 2026-09-01
+regime: education
+standards:
+  - standard: oai-pmh
+    status: conformant
+    confidence: high
+    operator: institution
+    evidence:
+      - url: https://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+        status: 200
+        detail: >-
+          OAI-PMH 2.0 Identify — repositoryName "UTP Electronic and Digital Intellectual Asset",
+          repositoryIdentifier utpedia.utp.edu.my, protocolVersion 2.0, granularity
+          YYYY-MM-DDThh:mm:ssZ, earliestDatestamp 2012-01-18, EPrints 3.4.7.
+      - url: https://utpedia.utp.edu.my/cgi/oai2?verb=ListMetadataFormats
+        status: 200
+        detail: 'metadataPrefix values served: oai_dc, mets, didl, rdf, oai_bibl, uketd_dc.'
+      - url: https://utpedia.utp.edu.my/cgi/oai2?verb=GetRecord&identifier=oai:utpedia.utp.edu.my:376&metadataPrefix=oai_dc
+        status: 200
+        detail: GetRecord returns a complete oai_dc record — the verb works, not just Identify.
+      - url: https://scholars.utp.edu.my/cgi/oai2?verb=Identify
+        status: 200
+        detail: >-
+          Second institution-operated OAI-PMH endpoint — repositoryName "UTP Scholarly
+          Publication", repositoryIdentifier scholars.utp.edu.my, earliestDatestamp 2010-02-25.
+      - url: https://journal.utp.edu.my/do/oai/?verb=Identify
+        status: 200
+        operator: tenant
+        detail: >-
+          Third OAI-PMH endpoint, on an institution-branded host that CNAMEs to
+          dcutpmy.bepress.com. repositoryName "Platform: A Journal of Engineering (PAJE)" but
+          adminEmail dc-support@elsevier.com — bepress Digital Commons operates the software.
+          Counted as a tenant surface, not institution engineering.
+  - standard: saml
+    status: conformant
+    confidence: high
+    operator: federation
+    evidence:
+      - url: https://login.microsoftonline.com/utp.edu.my/federationmetadata/2007-06/federationmetadata.xml
+        status: 200
+        detail: >-
+          SAML 2.0 federation metadata for the institution's own Microsoft Entra ID tenant.
+          entityID https://sts.windows.net/84187be3-037e-41ec-889c-a150fe476432/, IDPSSODescriptor
+          with protocolSupportEnumeration urn:oasis:names:tc:SAML:2.0:protocol and
+          SingleSignOnService at .../saml2 over both HTTP-POST and HTTP-Redirect bindings.
+      - url: https://login.microsoftonline.com/utp.edu.my/v2.0/.well-known/openid-configuration
+        status: 200
+        detail: >-
+          OIDC discovery for the same tenant; issuer
+          https://login.microsoftonline.com/84187be3-037e-41ec-889c-a150fe476432/v2.0.
+      - url: https://login.microsoftonline.com/getuserrealm.srf?login=user@utp.edu.my&json=1
+        status: 200
+        detail: >-
+          NameSpaceType "Managed", FederationBrandName "Universiti Teknologi PETRONAS" — confirms
+          utp.edu.my is a verified domain on a tenant the institution controls.
+  - standard: lti
+    status: conformant
+    confidence: medium
+    operator: tenant
+    evidence:
+      - url: https://ulearn.utp.edu.my/mod/lti/certs.php
+        status: 200
+        detail: >-
+          Live LTI 1.3 / IMS Global platform JWKS (application/json) — one RSA RS256 key,
+          kid 5832ebf3d8a7840973f5. The institution's Moodle acts as an LTI 1.3 platform. Host is
+          institution-branded but CNAMEs to ulearn.utp.my.pukunui.net, so the deployment is a
+          Pukunui-hosted Moodle tenancy; the signing keys are the institution's.
+      - url: https://ulearn.utp.edu.my/mod/lti/auth.php
+        status: 200
+        detail: LTI 1.3 authorization endpoint present.
+      - url: https://ulearn.utp.edu.my/mod/lti/token.php
+        status: 400
+        detail: Token endpoint present and rejecting an unsigned request, as specified.
+  - standard: crossref
+    status: conformant
+    confidence: high
+    operator: registry
+    evidence:
+      - url: https://api.crossref.org/members/39649
+        status: 200
+        detail: >-
+          Crossref member 39649 "Universiti Teknologi PETRONAS", Seri Iskandar, Perak, Malaysia.
+          DOI prefix 10.61762. 405 registered DOIs (113 current, 292 backfile).
+      - url: https://api.crossref.org/prefixes/10.61762/works?rows=2
+        status: 200
+        detail: >-
+          407 works under the institution's own prefix, across "Platform: A Journal of Science and
+          Technology" and "Platform: A Journal of Management and Humanities".
+  - standard: shibboleth
+    status: not_found
+    confidence: high
+    evidence:
+      - url: https://technical.edugain.org/api.php?action=list_entities&format=json
+        status: 200
+        detail: >-
+          Zero of 13,203 eduGAIN entities carry utp.edu.my. The Malaysian federation SIFULAN is in
+          eduGAIN (163 entities) and none of them is UTP. The institution federates through
+          Microsoft Entra ID instead of a Shibboleth IdP.
+  - standard: orcid
+    status: not_found
+    confidence: medium
+    evidence:
+      - url: https://scholars.utp.edu.my/cgi/oai2?verb=ListMetadataFormats
+        status: 200
+        detail: >-
+          No ORCID-bearing metadata format offered by either repository, and no institutional ORCID
+          member integration was found on a public surface.
+  - standard: datacite
+    status: not_found
+    confidence: medium
+    evidence:
+      - url: https://api.datacite.org/providers?query=petronas
+        status: 200
+        detail: No DataCite provider or client record matching the institution. DOIs are registered
+          through Crossref, not DataCite.
+  - standard: scim
+    status: not_found
+    confidence: low
+    evidence: []
+  - standard: oneroster
+    status: not_found
+    confidence: low
+    evidence: []
+  - standard: ed-fi
+    status: not_found
+    confidence: low
+    evidence: []
+  - standard: caliper
+    status: not_found
+    confidence: low
+    evidence: []
+  - standard: qti
+    status: not_found
+    confidence: low
+    evidence: []
+notes: >-
+  Reward-only. Nothing here is asserted from a prose claim on the institution's website; each
+  conformant entry is anchored to a response body that was read.

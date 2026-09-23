@@ -1,0 +1,197 @@
+# x-archived-from: universiti-teknologi-petronas-scholars-openapi.yml
+# x-archived-on: 2026-09-16
+openapi: 3.1.0
+info:
+  title: UTP Scholarly Publication (EPrints) — machine-readable surface
+  version: '2026-09-01'
+  summary: >-
+    OAI-PMH 2.0, EPrints REST, OpenSearch and feed endpoints served by UTP Scholarly Publication
+    on the institution's own host scholars.utp.edu.my.
+  description: >-
+    "UTP Scholarly Publication" is the second EPrints repository Universiti Teknologi PETRONAS
+    operates, holding staff publication records. scholars.utp.edu.my is a CNAME to
+    eprints.utp.edu.my (203.135.191.25) — both names are under the institution's own registrable
+    domain and the deployment is self-hosted, not a vendor tenancy. This document is DERIVED from
+    live probes on 2026-09-01; the institution publishes no OpenAPI of its own for this surface.
+  contact:
+    name: UTP Scholarly Publication repository administrator
+    url: https://scholars.utp.edu.my/
+  x-operator: institution
+  x-operator-evidence: >-
+    scholars.utp.edu.my CNAMEs to eprints.utp.edu.my, both under utp.edu.my; the OAI-PMH Identify
+    response names the repository "UTP Scholarly Publication" with repositoryIdentifier
+    scholars.utp.edu.my. No vendor host is involved.
+  x-software: EPrints
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source:
+      - https://scholars.utp.edu.my/cgi/oai2?verb=Identify
+      - https://scholars.utp.edu.my/cgi/oai2?verb=ListMetadataFormats
+      - https://scholars.utp.edu.my/cgi/oai2?verb=ListSets
+      - https://scholars.utp.edu.my/rest/
+      - https://scholars.utp.edu.my/rest/eprint/205.xml
+      - https://scholars.utp.edu.my/cgi/opensearchdescription
+      - https://scholars.utp.edu.my/cgi/latest_tool?output=RSS2
+    note: Derived by API Evangelist from probed responses only.
+servers:
+  - url: https://scholars.utp.edu.my
+    description: UTP Scholarly Publication (TLS).
+tags:
+  - name: OAI-PMH
+  - name: EPrints REST
+  - name: Discovery
+paths:
+  /cgi/oai2:
+    get:
+      tags: [OAI-PMH]
+      operationId: oaiPmh
+      summary: OAI-PMH 2.0 request
+      parameters:
+        - name: verb
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Identify, ListMetadataFormats, ListSets, ListIdentifiers, ListRecords, GetRecord]
+        - name: metadataPrefix
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [didl, mets, oai_bibl, oai_dc, rdf, uketd_dc]
+        - name: identifier
+          in: query
+          required: false
+          schema: { type: string, examples: ['oai:scholars.utp.edu.my:205'] }
+        - name: set
+          in: query
+          required: false
+          schema: { type: string }
+        - name: from
+          in: query
+          required: false
+          schema: { type: string, format: date-time }
+        - name: until
+          in: query
+          required: false
+          schema: { type: string, format: date-time }
+        - name: resumptionToken
+          in: query
+          required: false
+          schema: { type: string }
+      responses:
+        '200':
+          description: OAI-PMH response document, or an OAI-PMH error element at HTTP 200.
+          content:
+            text/xml:
+              schema: { type: string, contentMediaType: text/xml }
+  /rest/:
+    get:
+      tags: [EPrints REST]
+      operationId: listDatasets
+      summary: List REST datasets (eprint, user, subject)
+      responses:
+        '200':
+          description: XHTML dataset index.
+          content:
+            text/html:
+              schema: { type: string }
+  /rest/eprint/{eprintid}.xml:
+    get:
+      tags: [EPrints REST]
+      operationId: getEprintXml
+      summary: Get one publication record as EPrints XML
+      parameters:
+        - name: eprintid
+          in: path
+          required: true
+          schema: { type: integer }
+          examples:
+            observed: { value: 205 }
+      responses:
+        '200':
+          description: EPrints XML document.
+          content:
+            text/xml:
+              schema: { type: string, contentMediaType: text/xml }
+  /rest/subject/:
+    get:
+      tags: [EPrints REST]
+      operationId: listSubjects
+      summary: List subject terms
+      responses:
+        '200':
+          description: XHTML list of subject identifiers.
+          content:
+            text/html:
+              schema: { type: string }
+  /cgi/search:
+    get:
+      tags: [Discovery]
+      operationId: search
+      summary: Repository search with selectable output format
+      description: >-
+        The OpenSearch description document advertises output values Atom, BibTeX, ContextObject,
+        DC, EndNote, HTML and Ids against /cgi/search/simple.
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string }
+        - name: output
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [Atom, BibTeX, ContextObject, DC, EndNote, HTML, Ids]
+        - name: search_offset
+          in: query
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Result set in the requested serialisation.
+  /cgi/opensearchdescription:
+    get:
+      tags: [Discovery]
+      operationId: getOpenSearchDescription
+      summary: OpenSearch 1.1 description document
+      responses:
+        '200':
+          description: OpenSearch description document naming this repository and its output formats.
+          content:
+            application/opensearchdescription+xml:
+              schema: { type: string }
+  /cgi/latest_tool:
+    get:
+      tags: [Discovery]
+      operationId: getLatestFeed
+      summary: Feed of most recently deposited items
+      parameters:
+        - name: output
+          in: query
+          required: false
+          schema: { type: string, enum: [RSS2, Atom] }
+      responses:
+        '200':
+          description: RSS 2.0 feed.
+          content:
+            application/rss+xml:
+              schema: { type: string }
+  /sword-app/servicedocument:
+    get:
+      tags: [Discovery]
+      operationId: getSwordServiceDocument
+      summary: SWORD deposit service document
+      security:
+        - basicAuth: []
+      responses:
+        '401':
+          description: Unauthorized — observed. Deposit is credentialed; no attempt was made.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: EPrints SWORD deposit credentials. Read paths require no authentication.

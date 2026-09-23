@@ -1,0 +1,119 @@
+openapi: 3.2.0
+info:
+  title: Universiti Teknologi Petronas Discovery API
+  version: '2026-09-01'
+  x-operator: institution
+  x-refined-note:
+  - x-operator-evidence differs across the merged source definitions and was not carried
+  - x-provenance differs across the merged source definitions and was not carried
+  - x-software differs across the merged source definitions and was not carried
+  description: 'Operations tagged Discovery across 2 of this provider''s published API definitions: universiti-teknologi-petronas-scholars-openapi.yml, universiti-teknologi-petronas-utpedia-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://scholars.utp.edu.my
+  description: UTP Scholarly Publication (TLS).
+- url: https://utpedia.utp.edu.my
+  description: UTPedia institutional repository (TLS). The plain-http form advertised inside the OAI-PMH baseURL element did not complete a connection from our probe host on 2026-09-01.
+tags:
+- name: Discovery
+paths:
+  /cgi/search:
+    get:
+      tags:
+      - Discovery
+      operationId: search
+      summary: Repository search with selectable output format
+      description: The OpenSearch description document advertises output values Atom, BibTeX, ContextObject, DC, EndNote, HTML and Ids against /cgi/search/simple.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: output
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - Atom
+          - BibTeX
+          - ContextObject
+          - DC
+          - EndNote
+          - HTML
+          - Ids
+      - name: search_offset
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Result set in the requested serialisation.
+    servers:
+    - url: https://scholars.utp.edu.my
+      description: UTP Scholarly Publication (TLS).
+  /cgi/opensearchdescription:
+    get:
+      tags:
+      - Discovery
+      operationId: getOpenSearchDescription
+      summary: OpenSearch 1.1 description document
+      responses:
+        '200':
+          description: OpenSearch description document naming this repository and its output formats.
+          content:
+            application/opensearchdescription+xml:
+              schema:
+                type: string
+    servers:
+    - url: https://scholars.utp.edu.my
+      description: UTP Scholarly Publication (TLS).
+  /cgi/latest_tool:
+    get:
+      tags:
+      - Discovery
+      operationId: getLatestFeed
+      summary: Feed of most recently deposited items
+      parameters:
+      - name: output
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - RSS2
+          - Atom
+      responses:
+        '200':
+          description: RSS 2.0 feed.
+          content:
+            application/rss+xml:
+              schema:
+                type: string
+    servers:
+    - url: https://scholars.utp.edu.my
+      description: UTP Scholarly Publication (TLS).
+  /sword-app/servicedocument:
+    get:
+      tags:
+      - Discovery
+      operationId: getSwordServiceDocument
+      summary: SWORD deposit service document
+      security:
+      - basicAuth: []
+      responses:
+        '401':
+          description: Unauthorized — observed. Deposit is credentialed; no attempt was made.
+    servers:
+    - url: https://scholars.utp.edu.my
+      description: UTP Scholarly Publication (TLS).
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: EPrints SWORD deposit credentials. Read paths require no authentication.
+x-refined-from:
+- universiti-teknologi-petronas-scholars-openapi.yml
+- universiti-teknologi-petronas-utpedia-openapi.yml

@@ -1,0 +1,34 @@
+{
+  "provider": "universiti-teknologi-petronas",
+  "sources": [
+    "_original/universiti-teknologi-petronas-scholars-openapi.yml",
+    "_original/universiti-teknologi-petronas-utpedia-openapi.yml"
+  ],
+  "outputs": [
+    "universiti-teknologi-petronas-discovery-api-openapi.yml",
+    "universiti-teknologi-petronas-eprints-rest-api-openapi.yml",
+    "universiti-teknologi-petronas-oai-pmh-api-openapi.yml",
+    "universiti-teknologi-petronas-export-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "2 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "universiti-teknologi-petronas-scholars-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "universiti-teknologi-petronas-utpedia-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Discovery' spans 2 source specs (universiti-teknologi-petronas-scholars-openapi.yml, universiti-teknologi-petronas-utpedia-openapi.yml): per-path servers applied",
+    "tag 'EPrints REST' spans 2 source specs (universiti-teknologi-petronas-scholars-openapi.yml, universiti-teknologi-petronas-utpedia-openapi.yml): per-path servers applied",
+    "tag 'OAI-PMH' spans 2 source specs (universiti-teknologi-petronas-scholars-openapi.yml, universiti-teknologi-petronas-utpedia-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/universiti-teknologi-petronas-utpedia-openapi_2.yml: archived document superseded by a larger archived document",
+    "_original/universiti-teknologi-petronas-scholars-openapi_2.yml: archived document superseded by a larger archived document",
+    "universiti-teknologi-petronas-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "universiti-teknologi-petronas-eprints-rest-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "universiti-teknologi-petronas-export-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "universiti-teknologi-petronas-oai-pmh-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

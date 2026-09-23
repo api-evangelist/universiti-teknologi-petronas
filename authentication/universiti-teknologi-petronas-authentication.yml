@@ -1,0 +1,78 @@
+---
+name: Universiti Teknologi PETRONAS — authentication posture
+description: >-
+  How each machine-readable surface Universiti Teknologi PETRONAS operates or holds a tenancy in
+  handles authentication, established by probing each endpoint without credentials on 2026-09-01.
+  No credential was supplied, guessed, or obtained at any point.
+generated: '2026-09-01'
+modified: '2026-09-01'
+method: probed
+source: unauthenticated HTTP probes, 2026-09-01
+surfaces:
+  - surface: UTPedia OAI-PMH
+    url: https://utpedia.utp.edu.my/cgi/oai2
+    x-operator: institution
+    auth: none
+    observed_status: 200
+    detail: Fully open metadata harvesting. No key, no registration, no rate-limit header observed.
+  - surface: UTPedia EPrints REST (read)
+    url: https://utpedia.utp.edu.my/rest/
+    x-operator: institution
+    auth: none
+    observed_status: 200
+    detail: >-
+      Datasets eprint, subject and user all return 200 unauthenticated. Record retrieval at
+      /rest/eprint/{id}.xml is open; an unknown id returns 404.
+  - surface: UTPedia JSON export
+    url: https://utpedia.utp.edu.my/cgi/export/eprint/376/JSON/utpedia-eprint-376.js
+    x-operator: institution
+    auth: none
+    observed_status: 200
+    detail: application/json served without authentication for this record.
+  - surface: UTP Scholarly Publication JSON export
+    url: https://scholars.utp.edu.my/cgi/export/eprint/205/JSON/scholars-eprint-205.js
+    x-operator: institution
+    auth: basic
+    observed_status: 401
+    detail: >-
+      The sibling repository gates its JSON export behind HTTP Basic where UTPedia does not — the
+      two EPrints deployments are configured differently. OAI-PMH and REST read on this host
+      remain open.
+  - surface: SWORD deposit service document (both repositories)
+    url: https://utpedia.utp.edu.my/sword-app/servicedocument
+    x-operator: institution
+    auth: basic
+    observed_status: 401
+    detail: Deposit is credentialed. Present but not usable by the public; no attempt was made.
+  - surface: Moodle web services (uLearn)
+    url: https://ulearn.utp.edu.my/webservice/rest/server.php
+    x-operator: tenant
+    auth: token
+    observed_status: 200
+    detail: >-
+      Returns a structured Moodle exception — ERRORCODE invalidtoken, "Invalid token - token not
+      found" — so the web-service layer is enabled and expects a wstoken. Tokens are issued to
+      enrolled users, not to the public.
+  - surface: LTI 1.3 platform keys (uLearn)
+    url: https://ulearn.utp.edu.my/mod/lti/certs.php
+    x-operator: tenant
+    auth: none
+    observed_status: 200
+    detail: Public JWKS, as LTI 1.3 requires. RS256.
+  - surface: Microsoft Entra ID tenant (utp.edu.my)
+    url: https://login.microsoftonline.com/utp.edu.my/v2.0/.well-known/openid-configuration
+    x-operator: federation
+    auth: oauth2
+    observed_status: 200
+    detail: >-
+      OIDC discovery and SAML 2.0 federation metadata are public by design; the endpoints they
+      describe are the institution's own single-sign-on, tenant
+      84187be3-037e-41ec-889c-a150fe476432.
+  - surface: UCS single sign-on
+    url: https://ucs.utp.edu.my/SignIn
+    x-operator: institution
+    auth: interactive
+    observed_status: 200
+    detail: >-
+      Human sign-in page for UTP Computing Services. Not a documented API and no machine-readable
+      descriptor was found on the host.

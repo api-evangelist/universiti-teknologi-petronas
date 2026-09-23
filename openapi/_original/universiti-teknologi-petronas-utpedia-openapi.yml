@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: UTPedia Institutional Repository (EPrints) — machine-readable surface
+  version: '2026-09-01'
+  summary: >-
+    OAI-PMH 2.0, EPrints REST and export endpoints served by UTPedia, the Universiti Teknologi
+    PETRONAS institutional repository, on the institution's own host utpedia.utp.edu.my.
+  description: >-
+    UTPedia ("UTP Electronic and Digital Intellectual Asset") runs EPrints 3.4.7 on hardware under
+    Universiti Teknologi PETRONAS's own registrable domain (utp.edu.my). This document is DERIVED
+    from live probes of that deployment on 2026-09-01 — every path, media type and status code
+    below was observed with an HTTP request. Universiti Teknologi PETRONAS does not publish an
+    OpenAPI description of this surface; this is API Evangelist's reading of it, not the
+    institution's contract. The software is EPrints (University of Southampton); the DEPLOYMENT,
+    the host, the content and the operation are the institution's.
+  contact:
+    name: UTPedia repository administrator
+    email: sharifah_fahimah@utp.edu.my
+    url: https://utpedia.utp.edu.my/
+  x-operator: institution
+  x-operator-evidence: >-
+    Host utpedia.utp.edu.my is under the institution's own registrable domain utp.edu.my; the
+    OAI-PMH Identify response names the repository "UTP Electronic and Digital Intellectual Asset"
+    with adminEmail sharifah_fahimah@utp.edu.my and repositoryIdentifier utpedia.utp.edu.my.
+  x-software: EPrints 3.4.7
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source:
+      - https://utpedia.utp.edu.my/cgi/oai2?verb=Identify
+      - https://utpedia.utp.edu.my/cgi/oai2?verb=ListMetadataFormats
+      - https://utpedia.utp.edu.my/cgi/oai2?verb=ListSets
+      - https://utpedia.utp.edu.my/rest/
+      - https://utpedia.utp.edu.my/rest/eprint/376.xml
+      - https://utpedia.utp.edu.my/cgi/export/eprint/376/JSON/utpedia-eprint-376.js
+      - https://utpedia.utp.edu.my/cgi/opensearchdescription
+    note: >-
+      Derived by API Evangelist from probed responses. No endpoint appears here that was not
+      requested and observed.
+servers:
+  - url: https://utpedia.utp.edu.my
+    description: UTPedia institutional repository (TLS). The plain-http form advertised inside the
+      OAI-PMH baseURL element did not complete a connection from our probe host on 2026-09-01.
+tags:
+  - name: OAI-PMH
+    description: OAI-PMH 2.0 metadata harvesting interface.
+  - name: EPrints REST
+    description: EPrints read-only REST dataset interface.
+  - name: Export
+    description: Per-record export in a named format.
+  - name: Discovery
+    description: Descriptor and feed documents.
+paths:
+  /cgi/oai2:
+    get:
+      tags: [OAI-PMH]
+      operationId: oaiPmh
+      summary: OAI-PMH 2.0 request
+      description: >-
+        Single OAI-PMH endpoint. Protocol-level failures are returned as HTTP 200 carrying an
+        OAI-PMH <error code="..."> element, per the OAI-PMH 2.0 specification — observed codes
+        badVerb and badArgument.
+      parameters:
+        - name: verb
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Identify, ListMetadataFormats, ListSets, ListIdentifiers, ListRecords, GetRecord]
+        - name: metadataPrefix
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [oai_dc, mets, didl, rdf, oai_bibl, uketd_dc]
+          description: Metadata formats observed in the ListMetadataFormats response.
+        - name: identifier
+          in: query
+          required: false
+          schema:
+            type: string
+            examples: ['oai:utpedia.utp.edu.my:376']
+        - name: set
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: false
+          schema: { type: string, format: date-time }
+        - name: until
+          in: query
+          required: false
+          schema: { type: string, format: date-time }
+        - name: resumptionToken
+          in: query
+          required: false
+          schema: { type: string }
+      responses:
+        '200':
+          description: >-
+            OAI-PMH response document. Carries either the requested verb element or an
+            <error code> element; both are HTTP 200.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+  /rest/:
+    get:
+      tags: [EPrints REST]
+      operationId: listDatasets
+      summary: List REST datasets
+      description: Observed datasets — eprint, user, subject. Returns XHTML, not JSON.
+      responses:
+        '200':
+          description: XHTML dataset index.
+          content:
+            text/html:
+              schema: { type: string }
+  /rest/eprint/:
+    get:
+      tags: [EPrints REST]
+      operationId: listEprints
+      summary: List eprint identifiers
+      responses:
+        '200':
+          description: XHTML list of eprint ids.
+          content:
+            text/html:
+              schema: { type: string }
+  /rest/eprint/{eprintid}.xml:
+    get:
+      tags: [EPrints REST]
+      operationId: getEprintXml
+      summary: Get one eprint record as EPrints XML
+      parameters:
+        - name: eprintid
+          in: path
+          required: true
+          schema: { type: integer }
+          examples:
+            observed: { value: 376 }
+      responses:
+        '200':
+          description: EPrints XML document (namespace http://eprints.org/ep2/data/2.0).
+          content:
+            text/xml:
+              schema: { type: string, contentMediaType: text/xml }
+        '404':
+          description: Unknown eprint id — observed with id 99999999.
+          content:
+            text/html:
+              schema: { type: string }
+  /rest/subject/:
+    get:
+      tags: [EPrints REST]
+      operationId: listSubjects
+      summary: List subject terms
+      responses:
+        '200':
+          description: XHTML list of subject identifiers.
+          content:
+            text/html:
+              schema: { type: string }
+  /cgi/export/eprint/{eprintid}/JSON/{filename}:
+    get:
+      tags: [Export]
+      operationId: exportEprintJson
+      summary: Export one eprint record as JSON
+      description: >-
+        The only JSON-typed response observed on this deployment
+        (application/json; charset=utf-8). Schema at
+        json-schema/universiti-teknologi-petronas-eprint-json-schema.json.
+      parameters:
+        - name: eprintid
+          in: path
+          required: true
+          schema: { type: integer }
+          examples:
+            observed: { value: 376 }
+        - name: filename
+          in: path
+          required: true
+          schema: { type: string }
+          description: EPrints requires a trailing filename; observed form utpedia-eprint-376.js
+      responses:
+        '200':
+          description: EPrints record serialised as JSON.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EPrintRecord'
+        '401':
+          description: >-
+            Returned by the sibling scholars.utp.edu.my deployment for records whose export is
+            not public; recorded here because the two deployments share software and differ in
+            configuration.
+  /cgi/opensearchdescription:
+    get:
+      tags: [Discovery]
+      operationId: getOpenSearchDescription
+      summary: OpenSearch 1.1 description document
+      responses:
+        '200':
+          description: OpenSearch description document.
+          content:
+            application/opensearchdescription+xml:
+              schema: { type: string }
+  /cgi/latest_tool:
+    get:
+      tags: [Discovery]
+      operationId: getLatestFeed
+      summary: Feed of most recently deposited items
+      parameters:
+        - name: output
+          in: query
+          required: false
+          schema: { type: string, enum: [RSS2, Atom] }
+      responses:
+        '200':
+          description: RSS 2.0 feed.
+          content:
+            application/rss+xml:
+              schema: { type: string }
+  /sword-app/servicedocument:
+    get:
+      tags: [Discovery]
+      operationId: getSwordServiceDocument
+      summary: SWORD deposit service document
+      description: >-
+        Present and gated. Observed HTTP 401 with WWW-Authenticate — deposit requires repository
+        credentials, which API Evangelist does not hold and did not attempt.
+      security:
+        - basicAuth: []
+      responses:
+        '401':
+          description: Unauthorized — observed.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: EPrints SWORD deposit credentials. Read paths above require no authentication.
+  schemas:
+    EPrintRecord:
+      type: object
+      description: >-
+        Shape observed in the JSON export of eprint 376 on 2026-09-01. Field set is what that
+        record carried; EPrints records vary by item type.
+      properties:
+        eprintid: { type: integer }
+        rev_number: { type: integer }
+        eprint_status: { type: string, examples: [archive] }
+        userid: { type: integer }
+        dir: { type: string }
+        datestamp: { type: string }
+        lastmod: { type: string }
+        status_changed: { type: string }
+        type: { type: string, examples: [fyp] }
+        metadata_visibility: { type: string, examples: [show] }
+        creators:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: object
+                properties:
+                  family: { type: string }
+                  given: { type: string }
+                  lineage: { type: [string, 'null'] }
+                  honourific: { type: [string, 'null'] }
+        title: { type: string }
+        ispublished: { type: string }
+        subjects: { type: array, items: { type: string } }
+        divisions: { type: array, items: { type: string } }
+        full_text_status: { type: string }
+        abstract: { type: string }
+        date: { type: string }
+        date_type: { type: string }
+        publisher: { type: string }
+        place_of_pub: { type: string }
+        item_issues_count: { type: integer }
+        documents: { type: array, items: { type: object } }
+        uri: { type: string, format: uri }
+      required: [eprintid, eprint_status, type, uri]

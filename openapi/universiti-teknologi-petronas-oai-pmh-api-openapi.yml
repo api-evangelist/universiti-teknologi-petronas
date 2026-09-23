@@ -1,0 +1,98 @@
+openapi: 3.2.0
+info:
+  title: Universiti Teknologi Petronas OAI PMH API
+  version: '2026-09-01'
+  x-operator: institution
+  x-refined-note:
+  - x-operator-evidence differs across the merged source definitions and was not carried
+  - x-provenance differs across the merged source definitions and was not carried
+  - x-software differs across the merged source definitions and was not carried
+  description: 'Operations tagged OAI-PMH across 2 of this provider''s published API definitions: universiti-teknologi-petronas-scholars-openapi.yml, universiti-teknologi-petronas-utpedia-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://scholars.utp.edu.my
+  description: UTP Scholarly Publication (TLS).
+- url: https://utpedia.utp.edu.my
+  description: UTPedia institutional repository (TLS). The plain-http form advertised inside the OAI-PMH baseURL element did not complete a connection from our probe host on 2026-09-01.
+tags:
+- name: oai pmh
+paths:
+  /cgi/oai2:
+    get:
+      tags:
+      - oai pmh
+      operationId: oaiPmh
+      summary: OAI-PMH 2.0 request
+      parameters:
+      - name: verb
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - Identify
+          - ListMetadataFormats
+          - ListSets
+          - ListIdentifiers
+          - ListRecords
+          - GetRecord
+      - name: metadataPrefix
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - didl
+          - mets
+          - oai_bibl
+          - oai_dc
+          - rdf
+          - uketd_dc
+      - name: identifier
+        in: query
+        required: false
+        schema:
+          type: string
+          examples:
+          - oai:scholars.utp.edu.my:205
+      - name: set
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: until
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: resumptionToken
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OAI-PMH response document, or an OAI-PMH error element at HTTP 200.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+    servers:
+    - url: https://scholars.utp.edu.my
+      description: UTP Scholarly Publication (TLS).
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: EPrints SWORD deposit credentials. Read paths require no authentication.
+x-refined-from:
+- universiti-teknologi-petronas-scholars-openapi.yml
+- universiti-teknologi-petronas-utpedia-openapi.yml

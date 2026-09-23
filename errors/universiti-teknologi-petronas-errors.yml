@@ -1,0 +1,54 @@
+---
+name: Universiti Teknologi PETRONAS — observed error semantics
+description: >-
+  Error responses actually returned by the institution's machine-readable surfaces on 2026-09-01.
+  Recorded because the two dominant surfaces disagree about how failure is signalled — OAI-PMH
+  carries protocol errors inside an HTTP 200, while the EPrints REST layer uses HTTP status.
+generated: '2026-09-01'
+modified: '2026-09-01'
+method: probed
+source: unauthenticated HTTP probes, 2026-09-01
+errors:
+  - surface: OAI-PMH
+    request: https://utpedia.utp.edu.my/cgi/oai2?verb=BadVerb
+    http_status: 200
+    error_code: badVerb
+    message: The value of the verb argument is not a legal OAI-PMH verb
+    detail: >-
+      Conformant OAI-PMH 2.0 behaviour. A client that reads only the HTTP status will treat this
+      failure as a success — the error element must be parsed.
+  - surface: OAI-PMH
+    request: https://utpedia.utp.edu.my/cgi/oai2?verb=ListRecords
+    http_status: 200
+    error_code: badArgument
+    message: Missing required argument 'metadataPrefix'
+  - surface: EPrints REST
+    request: https://utpedia.utp.edu.my/rest/eprint/99999999.xml
+    http_status: 404
+    error_code: null
+    message: HTML not-found page, no machine-readable error body
+    detail: >-
+      Status code is correct; the body is a themed HTML page rather than a structured error
+      document, so an agent gets no parseable reason.
+  - surface: EPrints export / SWORD
+    request: https://scholars.utp.edu.my/cgi/export/eprint/205/JSON/scholars-eprint-205.js
+    http_status: 401
+    error_code: null
+    message: Apache default 401 Unauthorized page
+  - surface: Moodle web services
+    request: https://ulearn.utp.edu.my/webservice/rest/server.php
+    http_status: 200
+    error_code: invalidtoken
+    message: Invalid token - token not found
+    detail: >-
+      Moodle also returns a structured failure at HTTP 200 — an EXCEPTION element of class
+      core\exception\moodle_exception.
+  - surface: Institutional website (SharePoint)
+    request: https://www.utp.edu.my/.well-known/apis.json
+    http_status: 200
+    error_code: null
+    message: SharePoint error page containing "File Not Found."
+    detail: >-
+      SOFT 404. The main site answers 200 to unknown paths under /.well-known/, so a presence
+      check on this host is worthless without reading the body. No apis.json, llms.txt (404) or
+      security.txt (500) exists.
