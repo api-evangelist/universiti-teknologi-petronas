@@ -58,6 +58,21 @@ tags:
 - OAI-PMH
 - EPrints
 - Identity Federation
+- LMS
+- Scholarly Publishing
+tags_raw:
+- University
+- Higher Education
+- Education
+- Malaysia
+- Private Research University
+- Research
+- Research Repository
+- Institutional Repository
+- Open Access
+- OAI-PMH
+- EPrints
+- Identity Federation
 - Learning Management
 - Scholarly Publishing
 created: '2026-06-03'
@@ -217,7 +232,7 @@ apis:
   humanURL: https://ulearn.utp.edu.my/
   baseURL: https://ulearn.utp.edu.my
   tags:
-  - Learning Management
+  - LMS
   - Moodle
   - LTI
   - Tenants
@@ -244,7 +259,7 @@ apis:
     on a later pass.
   humanURL: https://ulearnplus.utp.edu.my/
   tags:
-  - Learning Management
+  - LMS
   - OpenLearning
   - Tenants
   - Education Technology
