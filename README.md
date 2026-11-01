@@ -1,4 +1,4 @@
-# Universiti Teknologi PETRONAS (universiti-teknologi-petronas)
+# Universiti Teknologi PETRONAS
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,54 +64,124 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Universiti Teknologi PETRONAS (UTP) is a leading private research university in Seri Iskandar, Perak, Malaysia, established in 1997 and wholly owned by PETRONAS. It is ranked #270 in the QS World University Rankings 2025. This repository catalogs UTP's confirmed public developer/API footprint as an APIs.json index.
+Universiti Teknologi PETRONAS (UTP) is a private research university in Seri Iskandar, Perak, Malaysia, established in 1997 and wholly owned by the national oil company PETRONAS. UTP publishes no developer portal, no API documentation and no OpenAPI of its own, and its main website — a SharePoint deployment — answers HTTP 200 to unknown /.well-known/ paths, so a presence check there proves nothing. What it does operate, verified by probe on 2026-09-01, is two self-hosted EPrints repositories on its own domain: UTPedia (utpedia.utp.edu.my, theses and final-year projects) and UTP Scholarly Publication (scholars.utp.edu.my, staff publications). Each serves an open OAI-PMH 2.0 endpoint, an unauthenticated EPrints REST dataset interface, an OpenSearch description document and RSS feeds; UTPedia additionally serves per-record JSON. The institution runs its own Microsoft Entra ID tenant for single sign-on, whose SAML 2.0 federation metadata and OIDC discovery document are public — it is not in eduGAIN or the Malaysian SIFULAN federation. UTP is a Crossref member (prefix 10.61762, 405 DOIs) and holds ROR 048g2sh07. Its learning platforms (Moodle via Pukunui at ulearn, OpenLearning at ulearnplus), its Digital Commons journal archive at journal.utp.edu.my and its MyJMS journals are vendor-operated tenancies recorded here as relationships, not as UTP engineering. No course catalog, timetable, open-data portal or research-computing API was found on any public host.
 
-- APIs.json: https://raw.githubusercontent.com/api-evangelist/universiti-teknologi-petronas/refs/heads/main/apis.yml
-- Run with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=universiti-teknologi-petronas-api-evangelist&utm_content=repo
+**Areas:** University · Higher Education · Education · Malaysia · Private Research University · Research · Research Repository · Institutional Repository · Open Access · OAI-PMH · EPrints · Identity Federation
 
-## Type
+## Universiti Teknologi PETRONAS on APIs.io
 
-- Type: Index
-- Position: Consumer
-- Access: 3rd-Party
+Everything profiled for Universiti Teknologi PETRONAS is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/universiti-teknologi-petronas/](https://apis.io/providers/universiti-teknologi-petronas/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (10)
 
-Education, Higher Education, University, Research, Open Access, Institutional Repository, OAI-PMH, Malaysia
+- [UTP Identity Federation (Microsoft Entra ID tenant)](https://apis.io/apis/universiti-teknologi-petronas/entra-federation/) — UTP federates identity through its own Microsoft Entra ID tenant rather than a Shibboleth IdP. Both the SAML 2.0 federation metadata (IDPSSODescriptor,…
+- [Crossref membership (DOI prefix 10.61762)](https://apis.io/apis/universiti-teknologi-petronas/crossref-membership/) — UTP registers DOIs with Crossref under its own prefix 10.61762 — 405 DOIs (113 current, 292 backfile) across "Platform: A Journal of Science and Technology"…
+- [ROR registration (048g2sh07)](https://apis.io/apis/universiti-teknologi-petronas/ror/) — The institution's Research Organization Registry record — the canonical machine-readable identity used by DOI metadata, funder systems and repository…
+- [Platform: A Journal of Engineering archive (bepress Digital Commons tenancy)](https://apis.io/apis/universiti-teknologi-petronas/journal-digital-commons/) — UTP's Digital Commons instance, holding the archive of "Platform: A Journal of Engineering (PAJE)" back to 2000. Serves OAI-PMH 2.0 at /do/oai/. Recorded as…
+- [uLearn learning management system (Moodle tenancy)](https://apis.io/apis/universiti-teknologi-petronas/ulearn-moodle/) — UTP's Moodle LMS. The Moodle web-service layer is enabled and answers with a structured invalidtoken exception, so it is real but token-gated. The instance…
+- [uLearn+ (OpenLearning tenancy)](https://apis.io/apis/universiti-teknologi-petronas/ulearnplus-openlearning/) — UTP's OpenLearning deployment, used for open and online course delivery alongside Moodle. No institution-published machine-readable descriptor was found on…
+- [Universiti Teknologi PETRONAS Discovery API](https://apis.io/apis/universiti-teknologi-petronas/universiti-teknologi-petronas-discovery-api/) — The Discovery API from Universiti Teknologi PETRONAS — 4 operation(s) for discovery.
+- [Universiti Teknologi PETRONAS EPrints REST API](https://apis.io/apis/universiti-teknologi-petronas/universiti-teknologi-petronas-eprints-rest-api/) — The EPrints REST API from Universiti Teknologi PETRONAS — 4 operation(s) for eprints rest.
+- [Universiti Teknologi PETRONAS Export API](https://apis.io/apis/universiti-teknologi-petronas/universiti-teknologi-petronas-export-api/) — Per-record export in a named format.
+- [Universiti Teknologi PETRONAS OAI PMH API](https://apis.io/apis/universiti-teknologi-petronas/universiti-teknologi-petronas-oai-pmh-api/) — The OAI-PMH API from Universiti Teknologi PETRONAS — 1 operation(s) for oai-pmh.
 
-## APIs
+### Published properties
 
-- **UTPedia Institutional Repository (OAI-PMH)** — EPrints 3.4.7 OAI-PMH 2.0 endpoint for harvesting repository metadata (oai_dc, mets, didl, rdf, oai_bibl, uketd_dc).
-  - Repository: http://utpedia.utp.edu.my/
-  - Documentation (Identify): http://utpedia.utp.edu.my/cgi/oai2?verb=Identify
-  - Base URL: http://utpedia.utp.edu.my/cgi/oai2
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Plans / Rate Limits / FinOps
+#### JSON Schema (1)
 
-- Plans: [plans/universiti-teknologi-petronas-plans-pricing.yml](plans/universiti-teknologi-petronas-plans-pricing.yml)
-- Rate Limits: [rate-limits/universiti-teknologi-petronas-rate-limits.yml](rate-limits/universiti-teknologi-petronas-rate-limits.yml)
-- FinOps: [finops/universiti-teknologi-petronas-finops.yml](finops/universiti-teknologi-petronas-finops.yml)
+The data models the API reads and writes.
 
-## Timestamps
+- [UTPedia EPrint record (JSON export)](https://apis.io/schemas/universiti-teknologi-petronas/universiti-teknologi-petronas-eprint-json/)
 
-- Created: 2026-06-03
-- Modified: 2026-06-03
+#### JSON-LD (1)
 
-## Common Properties
+Linked-data contexts for the provider's vocabulary.
 
-- Website: https://www.utp.edu.my/
-- LinkedIn: https://www.linkedin.com/school/universiti-teknologi-petronas/
-- Authentication (SSO): https://ucs.utp.edu.my/SignIn
-- Review: [review.yml](review.yml)
+- [Universiti Teknologi Petronas Context](https://apis.io/jsonld/universiti-teknologi-petronas/universiti-teknologi-petronas-context/)
 
-## Notes
+#### Security (2)
 
-- No dedicated developer portal or documented REST/GraphQL APIs were found for UTP.
-- The only confirmed public, machine-readable API is the UTPedia OAI-PMH endpoint, verified via a valid Identify response.
-- No official UTP GitHub organization was confirmed; results surfaced only student-club accounts (e.g., CYBERHAX UTP, UTPHAX), which are not included here.
-- The UCS single sign-on portal is authentication-gated and is listed for reference, not as a public API.
-- No endpoints were invented; only URLs actually probed are cataloged. See review.yml for per-URL status.
+Authentication, trust centre, and vulnerability disclosure.
 
-## Maintainers
+- [Universiti Teknologi Petronas Authentication](https://apis.io/security/universiti-teknologi-petronas/universiti-teknologi-petronas-authentication/)
+- [Universiti Teknologi Petronas Domain Security](https://apis.io/security/universiti-teknologi-petronas/universiti-teknologi-petronas-domain-security/)
 
-- Kin Lane — kin@apievangelist.com
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Universiti Teknologi Petronas Plans Pricing](https://apis.io/plans/universiti-teknologi-petronas/universiti-teknologi-petronas-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Universiti Teknologi Petronas Rate Limits](https://apis.io/rate-limits/universiti-teknologi-petronas/universiti-teknologi-petronas-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Universiti Teknologi Petronas Finops](https://apis.io/finops/universiti-teknologi-petronas/universiti-teknologi-petronas-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.utp.edu.my/)
+- [GitHub](https://github.com/Universiti-Teknologi-PETRONAS)
+
+## API Evangelist rating
+
+**Kin Score 18.1** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 62.5 |
+| Contract quality | 22.8 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 21.4 |
+| Access clarity | 5.3 |
+
+**Agent readiness 24.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/universiti-teknologi-petronas/](https://apis.io/providers/universiti-teknologi-petronas/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Universiti Teknologi PETRONAS: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/universiti-teknologi-petronas/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
